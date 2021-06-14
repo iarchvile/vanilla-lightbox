@@ -43,7 +43,7 @@ export default class VanillaLightbox{
                 let galleryId = this.lightboxId;
                 this.generateLightboxDom(galleryId);
                 if(lightboxes[i].childElementCount > 1){
-                    this.gallery.initGallery(lightboxes[i].querySelectorAll('a'),galleryId);
+                    this.gallery.initGallery(lightboxes[i],galleryId);
                 }else if(lightboxes[i].classList.contains('iframe')){
                     this.iframe.init(lightboxes[i].querySelector('a'),galleryId);
                 }else{

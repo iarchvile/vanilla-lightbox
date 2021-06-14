@@ -1,6 +1,6 @@
 {
   "name": "vanilla-lightbox-swiped",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Vanilla Lightbox",
   "main": "src/js/app.js",
   "author": "martinsjek",

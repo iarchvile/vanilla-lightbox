@@ -18,16 +18,54 @@ export default class Gallery {
         }
     }
 
-    initGallery(elements, id) {
-        const lightboxElement = document.querySelector(`.vanilla-lightbox-${id}`);
+    initGallery(lightbox, id) {
+
+        const
+            elements = lightbox.querySelectorAll('a'),
+            lightboxElement = document.querySelector(`.vanilla-lightbox-${id}`),
+            preview = lightbox.querySelector('.preview'),
+            previewLink = preview.querySelector('a'),
+            previewImg = preview.querySelector('img');
+
         this.generateGalleryDom(elements, id);
+
         for (let i = 0; i < elements.length; i++) {
+
             elements[i].setAttribute('data-lightbox', id);
-            elements[i].addEventListener('click', (e) => {
+
+
+            const onClick = (e) => {
                 e.preventDefault();
                 lightboxElement.classList.add('show');
                 this.openClickedImage(id, elements[i].getAttribute('data-image'));
-            })
+            }
+
+            elements[i].addEventListener('click', onClick);
+
+            elements[i].addEventListener('mouseenter', function (e) {
+
+                if (!e.target.parentNode.matches('.preview')) {
+
+                    for (let z = 0; z < elements.length; z++) {
+                        if (i !== z) {
+                            elements[z].classList.remove('_active');
+                        } else {
+                            elements[i].classList.add('_active');
+                        }
+                    }
+
+
+                    let clone = elements[i].cloneNode(true);
+                    preview.querySelector('a').remove();
+                    preview.appendChild(clone);
+                    preview.querySelector('a').className = previewLink.className;
+                    preview.querySelector('img').className = previewImg.className;
+                    clone.addEventListener('click', onClick);
+                }
+
+            });
+
+
         }
     }
 
@@ -35,7 +73,7 @@ export default class Gallery {
         const lightboxElement = document.querySelector(`.vanilla-lightbox-${id}`);
         let galleryElement = document.createElement('div');
         galleryElement.classList.add('gallery');
-        for (let i = 0; i < elements.length; i++) {
+        for (let i = 1; i < elements.length; i++) {
             elements[i].setAttribute('data-image', i);
             const imageUrl = elements[i].getAttribute('href');
 
@@ -45,9 +83,11 @@ export default class Gallery {
 
             let imageParentElement = document.createElement('div');
             imageParentElement.classList.add('image');
+
             if (i === elements.length - 1) {
                 imageParentElement.classList.add('last');
             }
+
             imageParentElement.setAttribute('data-image', i);
             imageParentElement.classList.add('hide');
             imageParentElement.appendChild(imageElement);
@@ -77,6 +117,8 @@ export default class Gallery {
             allImages = document.querySelectorAll(`.vanilla-lightbox-${galleryId} .image`),
             arrows = document.querySelectorAll('.vanilla-lightbox .arrow'),
             $this = this;
+
+        id = id || '1';
 
         if (allImages) {
             for (let i = 0; i < allImages.length; i++) {
@@ -113,7 +155,7 @@ export default class Gallery {
         let nextId, nextImage;
 
         if (arrow.classList.contains('arrow-left')) {
-            nextId = id > 0 ? id - 1 : null;
+            nextId = id > 1 ? id - 1 : null;
             nextImage = openedLightbox.querySelector(`[data-image="${nextId}"]`);
 
             if (!nextImage) {
@@ -124,7 +166,7 @@ export default class Gallery {
             nextImage = openedLightbox.querySelector(`[data-image="${nextId}"]`);
 
             if (!nextImage) {
-                nextImage = openedLightbox.querySelector(`[data-image="0"]`);
+                nextImage = openedLightbox.querySelector(`[data-image="1"]`);
             }
         }
         if (nextImage) {
