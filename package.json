@@ -8,5 +8,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/martinsjek/vanilla-lightbox"
+  },
+  "devDependencies": {
+    "swiped-events": "^1.1.4"
   }
 }
